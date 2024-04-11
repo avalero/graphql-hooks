@@ -1,4 +1,5 @@
 import { useEffect, useState } from "preact/hooks";
+import { doFetch } from "./utils.ts";
 
 /**
  * Hook for fetching data from a GraphQL API
@@ -30,14 +31,7 @@ export function useLazyQuery<DataType, VarsType>(
 
   const lazyQuery = (variables?: VarsType) => {
     setLoading(true);
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...headers,
-      },
-      body: JSON.stringify({ query, variables }),
-    })
+    doFetch(url, query, variables, headers)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch data");

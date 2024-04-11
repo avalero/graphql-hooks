@@ -1,4 +1,5 @@
 import { useEffect, useState } from "preact/hooks";
+import { doFetch } from "./utils.ts";
 
 /**
  * Hook for fetching data from a GraphQL API
@@ -30,14 +31,7 @@ export function useQuery<DataType, VarsType>(
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...headers,
-      },
-      body: JSON.stringify({ query, variables }),
-    })
+    doFetch(url, query, variables, headers)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch data");
@@ -56,14 +50,12 @@ export function useQuery<DataType, VarsType>(
   ) => {
     setLoading(true);
     setError(null);
-    fetch(newURL ?? url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(newHeaders || headers),
-      },
-      body: JSON.stringify({ query, variables: newVariables || variables }),
-    })
+    doFetch(
+      newURL ?? url,
+      query,
+      newVariables || variables,
+      newHeaders || headers
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch data");
