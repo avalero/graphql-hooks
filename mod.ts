@@ -1,5 +1,5 @@
 /**
- * Collection of preact hooks for fetching data.
+ * Collection of preact hooks for fetching data from a GraphQL API.
  * @module
  */
 
